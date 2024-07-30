@@ -10,7 +10,7 @@ RUN npm install
 
 # Copia il codice sorgente e costruisce l'app Angular
 COPY . .
-RUN npm run build --prod
+RUN npm run build 
 
 # Fase finale: configurazione di Nginx
 FROM nginx:alpine
