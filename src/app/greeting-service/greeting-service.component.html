@@ -1,0 +1,52 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div class="p-8">
+      <h1 class="text-3xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+        Servizio di Saluto Magico
+      </h1>
+      
+      <form [formGroup]="greetingForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="relative">
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Il tuo nome"
+            class="pl-10 pr-4 py-3 w-full border-2 border-purple-300 focus:border-pink-500 rounded-lg transition duration-200"
+            [ngClass]="{'border-red-500': greetingForm.controls['name'].invalid && (greetingForm.controls['name'].dirty || greetingForm.controls['name'].touched)}"
+          />
+          <app-smile-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400" size="20"></app-smile-icon>
+        </div>
+        
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 rounded-lg transition duration-200 flex items-center justify-center"
+          [disabled]="isLoading || greetingForm.invalid"
+        >
+          <ng-container *ngIf="isLoading">
+            <app-loader-icon class="mr-2 h-5 w-5 animate-spin"></app-loader-icon>
+            Invio in corso...
+          </ng-container>
+          <ng-container *ngIf="!isLoading">
+            <app-send-icon class="mr-2 h-5 w-5"></app-send-icon>
+            Ottieni il tuo Saluto Magico
+          </ng-container>
+        </button>
+      </form>
+
+      <div *ngIf="greeting" class="mt-6 p-4 bg-purple-100 rounded-lg">
+        <p class="text-lg font-medium text-purple-800 text-center">{{ greeting }}</p>
+      </div>
+
+      <app-alert *ngIf="error" variant="destructive" class="mt-6">
+        <app-frown-icon class="h-4 w-4 mr-2"></app-frown-icon>
+        <p class="font-medium">{{ error }}</p>
+      </app-alert>
+    </div>
+    
+    <div class="px-8 py-4 bg-gray-50 border-t border-gray-200">
+      <p class="text-xs text-center text-gray-500">
+        Powered by Choreo WSO2 - Trasforma i tuoi saluti in magia!
+      </p>
+    </div>
+  </div>
+</div>
