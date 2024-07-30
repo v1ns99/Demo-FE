@@ -1,31 +1,36 @@
-# Fase di build dell'applicazione Angular
+# Use an official Node.js runtime as the base image
 FROM node:18 AS build
 
-# Imposta la directory di lavoro
+# Set the working directory in the container
 WORKDIR /app
 
-# Copia i file di configurazione NPM e installa le dipendenze
-COPY package*.json ./
+# Copy the package.json and package-lock.json to the container
+COPY ../package*.json ./
+
+# Install the application dependencies
 RUN npm install
 
-# Copia il codice sorgente e costruisce l'app Angular
+# Copy the entire Angular app source code to the container
 COPY . .
-RUN npm run build 
 
-# Fase finale: configurazione di Nginx
+# Build the Angular application for production
+RUN npm run build
+
+# Use a lightweight Nginx image as the final image
 FROM nginx:alpine
 
-# Debug: Visualizza i contenuti iniziali della directory html di Nginx
+# Verify the contents of the Nginx image (for debugging purposes)
 RUN ls -l /usr/share/nginx/html
 
-# Copia l'applicazione build dalla fase di build alla directory di Nginx
-COPY --from=build /app/dist/greeting-service /usr/share/nginx/html
+# Copy the built Angular app from the previous stage to the Nginx web server directory
+# The dist directory is outside of src/app, hence use ../dist
+COPY --from=build /dist /usr/share/nginx/html
 
-# Copia il file di configurazione personalizzato di Nginx
+# Copy the custom Nginx configuration file
 COPY nginx/default.conf /etc/nginx/conf.d/
 
-# Espone la porta 80 per servire l'applicazione web
+# Expose port 80 for serving the web application
 EXPOSE 80
 
-# Avvia Nginx
+# Start the Nginx web server when the container runs
 CMD ["nginx", "-g", "daemon off;"]
