@@ -22,8 +22,10 @@ FROM nginx:alpine
 # Verify the contents of the Nginx image (for debugging purposes)
 RUN ls -l /usr/share/nginx/html
 
+WORKDIR /src
+
 # Copy the built Angular app from the previous stage to the Nginx web server directory
-COPY --from=build /app/dist/greeting-service /usr/share/nginx/html
+COPY --from=build app/dist/greeting-service /usr/share/nginx/html
 
 # Copy the custom Nginx configuration file
 COPY nginx/default.conf /etc/nginx/conf.d/
