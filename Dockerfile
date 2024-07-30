@@ -15,7 +15,7 @@
 # under the License.
 
 # Use an official Node.js runtime as the base image
-FROM node:17 AS build
+FROM node:18 AS build
 
 # Set the working directory in the container
 WORKDIR /app
