@@ -35,7 +35,7 @@ RUN npm run build
 # Use a lightweight Nginx image as the final image
 FROM nginx:alpine
 
-RUN /bin/sh ls
+RUN ls -l
 
 # Copy the built Angular app from the previous stage to the Nginx web server directory
 COPY --from=build ../../dist/greeting-service /usr/share/nginx/html
